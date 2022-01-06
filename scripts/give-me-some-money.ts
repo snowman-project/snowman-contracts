@@ -5,41 +5,36 @@ import config from './config';
 async function main() {
   unlockAccounts([
     config.testers.me.address,
-    config.tokens.dai.mock.richHolder.address, // Coinbase
+    config.tokens.usdc.mock.richHolder.address, // Coinbase
   ]);
 
   const signer = await ethers.getSigner(
-    config.tokens.dai.mock.richHolder.address
+    config.tokens.usdc.mock.richHolder.address
   );
 
   // Give me some ETH
-  console.info('Give me 10 ETH');
+  console.info('Give me 100 ETH');
+  let amount = ethers.utils.parseEther('100');
   await signer.sendTransaction({
-    from: config.tokens.dai.mock.richHolder.address,
+    from: config.tokens.usdc.mock.richHolder.address,
     to: config.testers.me.address,
-    value: ethers.utils.parseEther('10'),
+    value: amount,
   });
 
-  // Give me some DAI
-  const daiContract = new ethers.Contract(
-    config.tokens.dai.address,
+  // Give me some USDC
+  console.info('Give me 10000 USDC');
+  const contract = new ethers.Contract(
+    config.tokens.usdc.address,
     require('@openzeppelin/contracts/build/contracts/IERC20.json').abi,
     signer
   );
-  const balanceInDAI = await daiContract.balanceOf(
-    config.tokens.dai.mock.richHolder.address
-  );
-  console.info(
-    'Balance in DAI of 0x075...dc8',
-    ethers.utils.formatUnits(balanceInDAI, 18)
-  );
-  console.info('Give me 1000 DAI');
-  await daiContract.transferFrom(
-    config.tokens.dai.mock.richHolder.address,
+  amount = ethers.utils.parseUnits('10000', 6);
+  await contract.approve(config.tokens.usdc.mock.richHolder.address, amount);
+  await contract.transferFrom(
+    config.tokens.usdc.mock.richHolder.address,
     config.testers.me.address,
-    ethers.utils.parseUnits('1000', 18)
+    amount
   );
-  console.info('DONE');
 }
 
 async function unlockAccounts(addresses: string[]) {
