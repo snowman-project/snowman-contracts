@@ -7,6 +7,13 @@ import '@typechain/hardhat';
 import 'hardhat-gas-reporter';
 import 'solidity-coverage';
 
+import snowmanConfig from './snowman.config';
+import {
+  unlockAccounts,
+  giveMeETH,
+  giveMeUSDC,
+} from './scripts/give-me-some-money';
+
 dotenv.config();
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -17,6 +24,24 @@ task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
   for (const account of accounts) {
     console.log(account.address);
   }
+});
+
+task('give-me-some-money', async (taskArgs, hre) => {
+  await unlockAccounts(
+    [
+      snowmanConfig.testers.me.address,
+      snowmanConfig.tokens.usdc.mock.richHolder.address,
+    ],
+    hre
+  );
+
+  const signer = await hre.ethers.getSigner(
+    snowmanConfig.tokens.usdc.mock.richHolder.address
+  );
+
+  await giveMeETH(100, signer, hre);
+
+  await giveMeUSDC(10000, signer, hre);
 });
 
 // You need to export an object to set up your config

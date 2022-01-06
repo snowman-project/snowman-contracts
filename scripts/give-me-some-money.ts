@@ -1,47 +1,15 @@
-import { ethers, network } from 'hardhat';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { HardhatRuntimeEnvironment } from 'hardhat/types';
 
-import config from './config';
+import config from '../snowman.config';
 
-async function main() {
-  unlockAccounts([
-    config.testers.me.address,
-    config.tokens.usdc.mock.richHolder.address, // Coinbase
-  ]);
-
-  const signer = await ethers.getSigner(
-    config.tokens.usdc.mock.richHolder.address
-  );
-
-  // Give me some ETH
-  console.info('Give me 100 ETH');
-  let amount = ethers.utils.parseEther('100');
-  await signer.sendTransaction({
-    from: config.tokens.usdc.mock.richHolder.address,
-    to: config.testers.me.address,
-    value: amount,
-  });
-
-  // Give me some USDC
-  console.info('Give me 10000 USDC');
-  const contract = new ethers.Contract(
-    config.tokens.usdc.address,
-    require('@openzeppelin/contracts/build/contracts/IERC20.json').abi,
-    signer
-  );
-  amount = ethers.utils.parseUnits('10000', 6);
-  await contract.approve(config.tokens.usdc.mock.richHolder.address, amount);
-  await contract.transferFrom(
-    config.tokens.usdc.mock.richHolder.address,
-    config.testers.me.address,
-    amount
-  );
-}
-
-async function unlockAccounts(addresses: string[]) {
-  console.info('Unlocking accounts...', addresses);
+export async function unlockAccounts(
+  addresses: string[],
+  hre: HardhatRuntimeEnvironment
+) {
   await Promise.all(
     addresses.map((address) =>
-      network.provider.request({
+      hre.network.provider.request({
         method: 'hardhat_impersonateAccount',
         params: [address],
       })
@@ -49,7 +17,34 @@ async function unlockAccounts(addresses: string[]) {
   );
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+export async function giveMeETH(
+  amount: number,
+  signer: SignerWithAddress,
+  hre: HardhatRuntimeEnvironment
+) {
+  const amountBN = hre.ethers.utils.parseEther(amount.toString());
+  await signer.sendTransaction({
+    from: config.tokens.usdc.mock.richHolder.address,
+    to: config.testers.me.address,
+    value: amountBN,
+  });
+}
+
+export async function giveMeUSDC(
+  amount: number,
+  signer: SignerWithAddress,
+  hre: HardhatRuntimeEnvironment
+) {
+  const amountBN = hre.ethers.utils.parseUnits(amount.toString(), 6);
+  const contract = new hre.ethers.Contract(
+    config.tokens.usdc.address,
+    require('@openzeppelin/contracts/build/contracts/IERC20.json').abi,
+    signer
+  );
+  await contract.approve(config.tokens.usdc.mock.richHolder.address, amountBN);
+  await contract.transferFrom(
+    config.tokens.usdc.mock.richHolder.address,
+    config.testers.me.address,
+    amountBN
+  );
+}

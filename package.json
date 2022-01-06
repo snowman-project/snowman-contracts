@@ -11,7 +11,7 @@
     "console": "hardhat console --network localhost",
     "dev": "npx hardhat run --network localhost ./scripts/dev.ts",
     "deploy": "hardhat run --network localhost ./scripts/deploy.ts",
-    "give-me-some-money": "hardhat run --network localhost ./scripts/give-me-some-money.ts",
+    "give-me-some-money": "hardhat give-me-some-money --network localhost",
     "mock": "hardhat node",
     "test": "hardhat test --network localhost"
   },
@@ -39,6 +39,7 @@
     "ethers": "^5.0.0",
     "hardhat": "^2.8.0",
     "hardhat-gas-reporter": "^1.0.4",
+    "mocha": "^9.1.3",
     "prettier": "^2.3.2",
     "prettier-plugin-solidity": "^1.0.0-beta.13",
     "solhint": "^3.3.6",

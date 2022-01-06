@@ -1,7 +1,7 @@
 import { ethers } from 'hardhat';
 import { SnowmanAccount } from '../typechain';
 
-import config from './config';
+import config from '../snowman.config';
 
 async function main() {
   const signer = await ethers.getSigner(config.testers.me.address);
