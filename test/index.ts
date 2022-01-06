@@ -1,34 +1,33 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import assert from 'assert';
-import { Contract } from 'ethers';
 import { ethers, run } from 'hardhat';
 
 import config from '../snowman.config';
 
-import { SnowmanAccount } from '../typechain';
+import { IERC20, SnowmanAccount } from '../typechain';
 
 describe('Snowman Project', () => {
   let signer: SignerWithAddress;
-  let token: Contract;
+  let erc20: IERC20;
   let snowmanAccount: SnowmanAccount;
 
   before(async () => {
     signer = await ethers.getSigner(config.testers.me.address);
-    token = new ethers.Contract(
+    erc20 = new ethers.Contract(
       config.tokens.usdc.address,
       require('@openzeppelin/contracts/build/contracts/IERC20.json').abi,
       signer
-    );
+    ) as IERC20;
   });
 
   it('Should give money to poor people like me', async () => {
-    const tokenBalance = await token.balanceOf(config.testers.me.address);
+    const tokenBalance = await erc20.balanceOf(config.testers.me.address);
     if (tokenBalance.toNumber() === 0) {
       await run('give-me-some-money');
     }
   });
 
-  describe('SnowmanAccount', () => {
+  describe('Contract: SnowmanAccount', () => {
     it('Should deploy contracts', async () => {
       const SnowmanAccount = await ethers.getContractFactory(
         'SnowmanAccount',
@@ -43,14 +42,14 @@ describe('Snowman Project', () => {
           const balance = await snowmanAccount.balanceOf(
             config.testers.me.address
           );
-          const tokenBalance = await token.balanceOf(config.testers.me.address);
+          const tokenBalance = await erc20.balanceOf(config.testers.me.address);
           const amount = ethers.utils.parseUnits('100', 6);
-          await token.approve(snowmanAccount.address, amount);
+          await erc20.approve(snowmanAccount.address, amount);
           await snowmanAccount.deposit(amount);
           const newBalance = await snowmanAccount.balanceOf(
             config.testers.me.address
           );
-          const newTokenBalance = await token.balanceOf(
+          const newTokenBalance = await erc20.balanceOf(
             config.testers.me.address
           );
 
