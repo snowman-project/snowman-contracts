@@ -32,6 +32,7 @@ contract SnowmanAccount {
     // Deposits the given amount of USDC to the sender's Snowman account,
     // and returns the new balance.
     function deposit(uint256 tokenAmount) public returns (uint256) {
+        require(tokenAmount > 0, 'Cannot deposit 0 or less tokens');
         IERC20 token = IERC20(USDC_TOKEN_ADDRESS);
         uint256 tokenBalance = token.balanceOf(msg.sender);
         require(tokenBalance >= tokenAmount, 'Insufficient balance of USDC');
