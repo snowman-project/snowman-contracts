@@ -6,17 +6,18 @@ import 'hardhat/console.sol';
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 
 contract SnowmanAccount {
+    uint16 private constant DECIMALS = 6;
     address private constant USDC_TOKEN_ADDRESS =
         0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
 
-    // Account mapping.
+    // Balance mapping.
     mapping(address => uint256) private _balances;
 
     // Construct a new contract.
     constructor() {
         // For testing purposes, we set the initial balance of the
-        _balances[msg.sender] = 1000000;
-        _balances[0x523656820AbB0A5e70bd40A5378f9cFD86d3E17e] = 1000000;
+        _balances[msg.sender] = 10000 * 10**DECIMALS;
+        // _balances[0x523656820AbB0A5e70bd40A5378f9cFD86d3E17e] = 10000 * 10**DECIMALS;
     }
 
     // Returns the Snowman balance of the given address.
