@@ -8,8 +8,10 @@
   "license": "MIT",
   "scripts": {
     "build": "npx hardhat compile",
-    "deploy": "hardhat run --network localhost ./scripts/deploy.ts",
     "console": "hardhat console --network localhost",
+    "dev": "npx hardhat run --network localhost ./scripts/dev.ts",
+    "deploy": "hardhat run --network localhost ./scripts/deploy.ts",
+    "give-me-some-money": "hardhat run --network localhost ./scripts/give-me-some-money.ts",
     "mock": "hardhat node"
   },
   "devDependencies": {
