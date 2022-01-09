@@ -11,19 +11,19 @@ yarn
 ### Compile
 
 ```sh
-yarn run compile
+yarn compile
 ```
 
 ### Start a local server forked from mainnet
 
 ```sh
-yarn run mock
+yarn mock
 ```
 
 ### Deploy to local
 
 ```sh
-yarn run deploy
+yarn deploy
 ```
 
 ### Test from local
