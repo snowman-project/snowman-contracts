@@ -40,23 +40,23 @@ describe('Snowman Project', () => {
       it('Should deposit 100 USDC to my account', async () => {
         if (snowmanAccount) {
           const balance = await snowmanAccount.balanceOf(
-            config.testers.me.address
+            config.testers.me.address,
+            config.tokens.usdc.address
           );
           const tokenBalance = await erc20.balanceOf(config.testers.me.address);
           const amount = ethers.utils.parseUnits('100', 6);
           await erc20.approve(snowmanAccount.address, amount);
-          await snowmanAccount.deposit(amount);
+          await snowmanAccount.deposit(config.tokens.usdc.address, amount);
           const newBalance = await snowmanAccount.balanceOf(
-            config.testers.me.address
+            config.testers.me.address,
+            config.tokens.usdc.address
           );
           const newTokenBalance = await erc20.balanceOf(
             config.testers.me.address
           );
 
-          assert(newBalance.sub(balance).toNumber() === amount.toNumber());
-          assert(
-            tokenBalance.sub(newTokenBalance).toNumber() === amount.toNumber()
-          );
+          assert(newBalance.sub(balance).eq(amount));
+          assert(tokenBalance.sub(newTokenBalance).eq(amount));
         }
       });
     });
