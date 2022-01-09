@@ -12,6 +12,8 @@ describe('Snowman Project', () => {
   let snowmanAccount: SnowmanAccount;
 
   before(async () => {
+    const { chainId } = await ethers.provider.getNetwork();
+    console.info(`    Chain ID: ${chainId}`);
     signer = await ethers.getSigner(config.testers.me.address);
     erc20 = new ethers.Contract(
       config.tokens.usdc.address,
