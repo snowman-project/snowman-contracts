@@ -7,13 +7,13 @@
   "author": "Henry Li <henry1943@163.com>",
   "license": "MIT",
   "scripts": {
-    "build": "npx hardhat compile",
     "console": "hardhat console --network localhost",
-    "dev": "npx hardhat run --network localhost ./scripts/dev.ts",
+    "compile": "npx hardhat compile",
     "deploy": "hardhat run --network localhost ./scripts/deploy.ts",
+    "dev": "npx hardhat run --network localhost ./scripts/dev.ts",
     "give-me-some-money": "hardhat give-me-some-money --network localhost",
     "mock": "hardhat node",
-    "test": "hardhat test --network localhost"
+    "test": "hardhat test --network localhost --timeout 10000"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.0",
