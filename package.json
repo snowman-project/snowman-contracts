@@ -13,7 +13,7 @@
     "dev": "npx hardhat run --network localhost ./scripts/dev.ts",
     "give-me-some-money": "hardhat give-me-some-money --network localhost",
     "mock": "hardhat node",
-    "test": "hardhat test --network localhost --timeout 10000"
+    "test": "hardhat test --network localhost"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.0",
