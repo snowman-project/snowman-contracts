@@ -3,6 +3,7 @@ import assert from 'assert';
 import { ethers, run } from 'hardhat';
 
 import config from '../snowman.config';
+import { deployContract } from '../scripts/deploy';
 
 import { IERC20, SnowmanAccount } from '../typechain';
 
@@ -31,11 +32,9 @@ describe('Snowman Project', () => {
 
   describe('Contract: SnowmanAccount', () => {
     it('Should deploy contracts', async () => {
-      const SnowmanAccount = await ethers.getContractFactory(
-        'SnowmanAccount',
-        signer
-      );
-      snowmanAccount = await SnowmanAccount.deploy();
+      const instance = await deployContract('SnowmanAccount');
+      console.info(instance.interface.fragments);
+      console.info(`SnowmanAccount deployed to: ${instance.address}`);
     });
 
     describe('#deposit()', () => {
@@ -45,6 +44,7 @@ describe('Snowman Project', () => {
             config.testers.me.address,
             config.tokens.usdc.address
           );
+          console.info('balance', balance);
           const tokenBalance = await erc20.balanceOf(config.testers.me.address);
           const amount = ethers.utils.parseUnits('100', 6);
           await erc20.approve(snowmanAccount.address, amount);
@@ -53,6 +53,7 @@ describe('Snowman Project', () => {
             config.testers.me.address,
             config.tokens.usdc.address
           );
+          console.info('newBalance', newBalance);
           const newTokenBalance = await erc20.balanceOf(
             config.testers.me.address
           );
