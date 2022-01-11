@@ -45,7 +45,6 @@ describe('Snowman Project', () => {
             config.testers.me.address,
             config.tokens.usdc.address
           );
-          console.info('balance', balance);
           const tokenBalance = await erc20.balanceOf(config.testers.me.address);
           const amount = ethers.utils.parseUnits('100', 6);
           await erc20.approve(snowmanAccount.address, amount);
@@ -54,7 +53,6 @@ describe('Snowman Project', () => {
             config.testers.me.address,
             config.tokens.usdc.address
           );
-          console.info('newBalance', newBalance);
           const newTokenBalance = await erc20.balanceOf(
             config.testers.me.address
           );
