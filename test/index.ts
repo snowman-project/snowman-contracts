@@ -32,13 +32,14 @@ describe('Snowman Project', () => {
 
   describe('Contract: SnowmanAccount', () => {
     it('Should deploy contracts', async () => {
-      const instance = await deployContract('SnowmanAccount');
-      console.info(instance.interface.fragments);
-      console.info(`SnowmanAccount deployed to: ${instance.address}`);
+      const instance = await deployContract('SnowmanAccount', signer);
+      snowmanAccount = (await instance.deployed()) as SnowmanAccount;
+      console.info(`        Deployed to ${instance.address}`);
     });
 
     describe('#deposit()', () => {
       it('Should deposit 100 USDC to my account', async () => {
+        assert(snowmanAccount !== null);
         if (snowmanAccount) {
           const balance = await snowmanAccount.balanceOf(
             config.testers.me.address,
