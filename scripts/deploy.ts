@@ -3,6 +3,7 @@
 //
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
+import fs from 'fs';
 import { ethers } from 'hardhat';
 
 async function main() {
@@ -14,13 +15,23 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  await deployContract('SnowmanAccount');
+  const instance = await deployContract('SnowmanAccount');
+  console.info(`SnowmanAccount deployed to: ${instance.address}`);
 }
 
-async function deployContract(contractName: string) {
+export async function deployContract(contractName: string) {
   const contract = await ethers.getContractFactory(contractName);
   const instance = await contract.deploy();
-  console.info(`${contractName} deployed to: ${instance.address}`);
+  const fileName = `./artifacts/contracts/${contractName}.sol/${contractName}.json`;
+  const artifactsJSON = JSON.parse(
+    fs
+      .readFileSync(
+        `./artifacts/contracts/${contractName}.sol/${contractName}.json`
+      )
+      .toString()
+  );
+  artifactsJSON.address = instance.address;
+  fs.writeFileSync(fileName, JSON.stringify(artifactsJSON, null, 2));
   return instance;
 }
 
