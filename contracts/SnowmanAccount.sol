@@ -20,10 +20,7 @@ contract SnowmanAccount is Ownable {
     /**
      * Used internally to initialize the contract.
      */
-    constructor() {
-        _balances[msg.sender][address(0)] = 1000 ether;
-        _balances[msg.sender][USDC_TOKEN_ADDRESS] = 10000 ether;
-    }
+    constructor() {}
 
     /**
      * Returns the specific ERC20 balance of the given address.
