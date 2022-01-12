@@ -30,13 +30,13 @@ task('give-me-some-money', async (taskArgs, hre) => {
   await unlockAccounts(
     [
       snowmanConfig.testers.me.address,
-      snowmanConfig.tokens.usdc.mock.richHolder.address,
+      snowmanConfig.tokens.USDC.mock.richHolder.address,
     ],
     hre
   );
 
   const signer = await hre.ethers.getSigner(
-    snowmanConfig.tokens.usdc.mock.richHolder.address
+    snowmanConfig.tokens.USDC.mock.richHolder.address
   );
 
   await giveMeETH(100, signer, hre);

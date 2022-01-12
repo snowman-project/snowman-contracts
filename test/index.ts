@@ -17,7 +17,7 @@ describe('Snowman Project', () => {
     console.info(`    Chain ID: ${chainId}`);
     signer = await ethers.getSigner(config.testers.me.address);
     erc20 = new ethers.Contract(
-      config.tokens.usdc.address,
+      config.tokens.USDC.address,
       require('@openzeppelin/contracts/build/contracts/IERC20.json').abi,
       signer
     ) as IERC20;
@@ -43,15 +43,15 @@ describe('Snowman Project', () => {
         if (snowmanAccount) {
           const balance = await snowmanAccount.balanceOf(
             config.testers.me.address,
-            config.tokens.usdc.address
+            config.tokens.USDC.address
           );
           const tokenBalance = await erc20.balanceOf(config.testers.me.address);
           const amount = ethers.utils.parseUnits('100', 6);
           await erc20.approve(snowmanAccount.address, amount);
-          await snowmanAccount.deposit(config.tokens.usdc.address, amount);
+          await snowmanAccount.deposit(config.tokens.USDC.address, amount);
           const newBalance = await snowmanAccount.balanceOf(
             config.testers.me.address,
-            config.tokens.usdc.address
+            config.tokens.USDC.address
           );
           const newTokenBalance = await erc20.balanceOf(
             config.testers.me.address
