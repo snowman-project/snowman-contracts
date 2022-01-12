@@ -1,10 +1,11 @@
-export interface NamedAddress {
-  name: string;
-  address: string;
-}
+import {
+  ERC20Symbol,
+  NamedAddress,
+  ERC20Token,
+  SUPPORTED_ERC20_TOKENS,
+} from './types';
 
-export interface TokenConfig extends NamedAddress {
-  symbol: string;
+export interface TokenConfig extends ERC20Token {
   mock: {
     richHolder: { address: string };
   };
@@ -12,7 +13,7 @@ export interface TokenConfig extends NamedAddress {
 
 export interface GlobalConfig {
   testers: Record<'me', NamedAddress>;
-  tokens: Record<'usdc', TokenConfig>;
+  tokens: Record<ERC20Symbol, TokenConfig>;
 }
 
 const config: GlobalConfig = {
@@ -23,30 +24,18 @@ const config: GlobalConfig = {
     },
   },
   tokens: {
-    usdc: {
-      name: 'USD Coin',
-      symbol: 'USDC',
-      address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    USDC: {
+      ...SUPPORTED_ERC20_TOKENS.USDC,
       mock: {
         richHolder: { address: '0x6262998Ced04146fA42253a5C0AF90CA02dfd2A3' },
       },
     },
-    // dai: {
-    //   name: 'DAI',
-    //   symbol: 'DAI',
-    //   address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-    //   mock: {
-    //     richHolder: { address: '0x075e72a5eDf65F0A5f44699c7654C1a76941Ddc8' },
-    //   },
-    // },
-    // usdt: {
-    //   name: 'Tether USD',
-    //   symbol: 'USDT',
-    //   address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-    //   mock: {
-    //     richHolder: { address: '0x5754284f345afc66a98fbb0a0afe71e0f007b949' },
-    //   },
-    // },
+    WETH: {
+      ...SUPPORTED_ERC20_TOKENS.WETH,
+      mock: {
+        richHolder: { address: '0x6262998Ced04146fA42253a5C0AF90CA02dfd2A3' },
+      },
+    },
   },
 };
 
