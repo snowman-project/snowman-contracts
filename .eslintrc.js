@@ -16,10 +16,10 @@ module.exports = {
     ecmaVersion: 12,
   },
   rules: {
-    'node/no-unsupported-features/es-syntax': [
-      'error',
-      { ignores: ['modules'] },
-    ],
+    'node/no-extraneous-import': 'off',
+    'node/no-unpublished-import': 'off',
+    'node/no-unsupported-features/es-syntax': 'off',
+    'no-redeclare': 'off',
   },
   settings: {
     node: {
