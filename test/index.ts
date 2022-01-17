@@ -57,7 +57,7 @@ describe('Snowman Project', () => {
             config.testers.me.address
           );
 
-          assert(newBalance.sub(balance).eq(amount));
+          assert(newBalance.sub(balance).eq(amount.mul(10 ** 12)));
           assert(tokenBalance.sub(newTokenBalance).eq(amount));
         }
       });

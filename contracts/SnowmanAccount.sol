@@ -4,13 +4,14 @@ pragma solidity ^0.8.0;
 import 'hardhat/console.sol';
 
 import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
 /**
  * @title Snowman membership and balances.
  */
 contract SnowmanAccount is Ownable {
-    uint16 private constant DECIMALS = 6;
+    uint256 public constant DECIMALS = 18;
+
     address private constant USDC_TOKEN_ADDRESS =
         0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
 
@@ -53,7 +54,7 @@ contract SnowmanAccount is Ownable {
             erc20Contract == USDC_TOKEN_ADDRESS,
             'Currently we only accept USDC'
         );
-        IERC20 token = IERC20(erc20Contract);
+        ERC20 token = ERC20(erc20Contract);
         uint256 tokenBalance = token.balanceOf(msg.sender);
         require(tokenBalance >= tokenAmount, 'Insufficient balance of USDC');
         bool result = token.transferFrom(
@@ -62,7 +63,9 @@ contract SnowmanAccount is Ownable {
             tokenAmount
         );
         require(result, 'Failed to deposit ERC20');
-        uint256 amount = tokenAmount * 1; // In case we have an exchange rate in the future.
+        uint256 decimals = token.decimals();
+        uint256 decimalFactor = 10**(DECIMALS - decimals);
+        uint256 amount = tokenAmount * decimalFactor; // In case we have an exchange rate in the future.
         _balances[msg.sender][erc20Contract] += amount;
         return _balances[msg.sender][erc20Contract];
     }
